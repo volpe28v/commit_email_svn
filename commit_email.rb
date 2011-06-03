@@ -1,12 +1,14 @@
 #!/usr/local/bin/ruby -Ke
 
+$:.unshift File.dirname(__FILE__)
+
 require 'net/smtp'
 require 'kconv'
 require 'date'
 
-require '/opt/svn/commit_member_info'
-require '/opt/svn/setting'
-require '/opt/svn/mail_sender'
+require 'commit_member_info'
+require 'setting'
+require 'mail_sender'
 
 ###############################################################################
 # 設定値
@@ -15,7 +17,7 @@ TEST_MODE = false   # テストモード(メール通知先限定)の場合は t
 
 # for setting
 MAX_COMMIT_POINT = 10
-RANK_FILE = '/opt/svn/commit_ranking.txt';
+RANK_FILE = File.dirname(__FILE__) + '/commit_ranking.txt';
 
 
 REPOS = ARGV[0]
