@@ -1,0 +1,13 @@
+# GmailのSMTP経由でメールを送信するには以下を設定してください
+#MyGmailAddr = "xxxx@gmail.com"
+#MyGmailPass = "****"
+
+# Subversionのアカウント名をコミットメール上で変換したい場合は以下に書いてください
+NameList = Hash.new("");
+#NameList.store("hoge" ,    "ほげ");
+
+# リポジトリごとにメール送信先を設定したい場合は以下に書いてください
+ToAddrs = Hash.new
+#ToAddrs['repo_name'] = [ 'xxxx@gmail.com', 'yyyy@zzzz.ccc' ]
+
+

@@ -83,6 +83,7 @@ def update_ranking( user_name, rank_file = RANK_FILE, point = 1)
     end
 
     commit_info_hash = Hash.new()
+    open( rank_file, "w").close unless File.exist?( rank_file )
     open(rank_file,"r"){ |file|
         file.readlines.each{ |line|
             commit_info = CommitInfo.new(line)
