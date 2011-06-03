@@ -1,0 +1,7 @@
+#!/bin/sh
+REPOS="$1"
+REV="$2"
+export LANG=japanese
+#/usr/local/svn/commit-email.rb "$REPOS" "$REV"
+ruby /opt/svn/commit_email.rb "$REPOS" "$REV"
+
