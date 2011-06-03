@@ -1,5 +1,3 @@
-#!/usr/local/bin/ruby -Ke
-
 $:.unshift File.dirname(__FILE__)
 
 require 'net/smtp'
@@ -17,6 +15,7 @@ class CommitRank
   def initialize(rank_file = RANK_FILE)
     @rank_file = rank_file
     @commit_info_hash = Hash.new()
+
     open( rank_file, "w").close unless File.exist?( rank_file )
     open(rank_file,"r"){ |file|
         file.readlines.each{ |line|
@@ -36,8 +35,6 @@ class CommitRank
     # ユーザ名不明の場合
     if user_name == ""
         user_name = "unknown"
-        # ランキングそのまま   
-        return
     end
 
     # リストにないメンバーの場合
@@ -48,22 +45,19 @@ class CommitRank
     # 該当ユーザのカウントをインクリメント
     @commit_info_hash[user_name].addCommit(point)
 
-    # ハッシュを回数の多い順に並び換える
-    commit_info_array = @commit_info_hash.to_a.sort{|a,b| (b[1].allCommitNum <=> a[1].allCommitNum) }
-
     # 結果をファイルへ書き出す
     open(@rank_file,"w"){ |file|
-        commit_info_array.each{ |commit_info|
-            file.puts(commit_info[1].printStr)
-            puts commit_info[1].printStr 
-        }
+      commit_info_array = @commit_info_hash.to_a.sort{|a,b| (b[1].allCommitNum <=> a[1].allCommitNum) }
+      commit_info_array.each{ |commit_info|
+        file.puts(commit_info[1].printStr)
+        puts commit_info[1].printStr 
+      }
     }
-
   end
 
   # ランク結果表示文字列作成
   def make_rank_result
-    rank_array = @commit_info_hash.to_a.sort{|a,b| (b[1].allCommitNum <=> a[1].allCommitNum) }
+    rank_array = self.get_sorted_commit_info_array
     bar_limit = 50
     max_sum = 0
     sum = 0
@@ -91,7 +85,7 @@ class CommitRank
 end
 
 def make_rank_part( user_name )
-    rank_array = @commit_info_hash.to_a.sort{|a,b| (b[1].allCommitNum <=> a[1].allCommitNum) }
+    rank_array = self.get_sorted_commit_info_array
     result_array = []
     
     user_index = 0
@@ -133,7 +127,7 @@ def make_rank_part( user_name )
   end
 
   def get_rank_num( user_name )
-    rank_array = @commit_info_hash.to_a.sort{|a,b| (b[1].allCommitNum <=> a[1].allCommitNum) }
+    rank_array = self.get_sorted_commit_info_array
     rank_array.each_with_index {|commit_info,num|
       if commit_info[0] == user_name
         return (num + 1).to_s
@@ -142,5 +136,10 @@ def make_rank_part( user_name )
 
     return "--"
   end
+
+  def get_sorted_commit_info_array
+    @commit_info_hash.to_a.sort{|a,b| (b[1].allCommitNum <=> a[1].allCommitNum) }
+  end
+
 end
 
