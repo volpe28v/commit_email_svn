@@ -14,8 +14,6 @@ require 'mail_body'
 
 ###############################################################################
 # 設定値
-TEST_MODE = false   # テストモード(メール通知先限定)の場合は true
-#TEST_MODE = true   # テストモード(メール通知先限定)の場合は true
 
 REPOS = ARGV[0]
 REV   = ARGV[1].to_i
@@ -35,7 +33,7 @@ fromaddr=['Subversion@localhost.localdomain']
 # メインフロー開始
 
 # 宛先判定
-toaddr = getSendMember( REPOS,TEST_MODE )
+toaddr = getSendMember( REPOS )
 
 update_point = svnchanged.split("\n").length
 

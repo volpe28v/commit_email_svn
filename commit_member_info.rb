@@ -19,7 +19,7 @@ def getNameFrom( svn_name )
 end
 
 # コミットメール配信先取得
-def getSendMember (repos, isTestMode)
+def getSendMember (repos)
 
   #Todo: setting.rb に ToAddrs の定義を外だししているが汚いので直す予定
 
