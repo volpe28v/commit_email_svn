@@ -95,9 +95,11 @@ end
 subject = " #{commit_name}さんがコミットしました [#{File.basename(update_filename)} (#{update_point})] #{update_log}"
 repo_name = File.basename(REPOS);
 
-g_sub = "[SVN-#{repo_name}-#{REV}] #{subject.tojis}"
-g_body = body.tojis
-GmailSender.new(MyGmailAddr, MyGmailPass).send_mail( g_sub, g_body, fromaddr, toaddr)
+sub = "[SVN-#{repo_name}-#{REV}] #{subject.tojis}"
+GmailSender.new(MyGmailAddr, MyGmailPass).send_mail( sub, body, fromaddr, toaddr)
+
+#Gmail以外で SMTP を指定して送る場合は以下でいけるかもしれない
+#MailSender.new(smtp ,port).send_mail( sub, body, fromaddr, toaddr)
 
 exit
 
