@@ -8,28 +8,28 @@ require 'date'
 
 class CommitMailBody
 
-def get_hello do
-  # 挨拶選択
-  now_time = Time.now
+  def get_hello 
+    # 挨拶選択
+    now_time = Time.now
 
-  hello = ""
-  case now_time.hour
-  when 8..10
-    hello = "おはようございます!"
-  when 11..16
-    hello = "こんにちは!"
-  when 17..21
-    hello = "こんばんは!"
-  when 22..24
-    hello = "遅くまでご苦労様です。"
-  when 0..4
-    hello = "かなり遅くまでご苦労様です。"
-  when 5..7
-    hello = "朝早くからご苦労様です。"
-  else
-    hello = "お疲れさまです。"
+    hello = ""
+    case now_time.hour
+    when 8..10
+      hello = "おはようございます!"
+    when 11..16
+      hello = "こんにちは!"
+    when 17..21
+      hello = "こんばんは!"
+    when 22..24
+      hello = "遅くまでご苦労様です。"
+    when 0..4
+      hello = "かなり遅くまでご苦労様です。"
+    when 5..7
+      hello = "朝早くからご苦労様です。"
+    else
+      hello = "お疲れさまです。"
+    end
   end
-end
 
   def get_mail_body( elem_hash )
 ###############################################################################
