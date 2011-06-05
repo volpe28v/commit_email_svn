@@ -10,6 +10,7 @@ require 'commit_member_info'
 require 'setting'
 require 'mail_sender'
 require 'commit_rank'
+require 'mail_body'
 
 ###############################################################################
 # 設定値
@@ -52,7 +53,6 @@ end
 commit_rank = CommitRank.new
 commit_rank.update_ranking(svnauthor, commit_point);
 rank_result =  commit_rank.make_rank_result
-
 rank_part = commit_rank.make_rank_part(svnauthor )
 
 # 更新ファイルのフルパス生成
@@ -70,68 +70,21 @@ rank_num = commit_rank.get_rank_num( svnauthor )
 # コミットファイル情報取得
 update_filename = svnchanged.split("\n")[0].split(" ")[1]
 
-# 挨拶選択
-now_time = Time.now
+body = CommitMailBody.new.get_mail_body(
+  {:commit_name => commit_name,
+   :commit_point => commit_point,
+   :commit_com => commit_com,
+   :update_point => update_point,
+   :rank_num => rank_num,
+   :rank_part => rank_part,
+   :rank_result => rank_result,
+   :change_fullpath => change_fullpath,
+   :repos => REPOS
+   :rev => REV,
+   :svndate => svndate,
+   :svnauthor => svnauthor,
+  })
 
-hello = ""
-case now_time.hour
-when 8..10
-  hello = "おはようございます!"
-when 11..16
-  hello = "こんにちは!"
-when 17..21
-  hello = "こんばんは!"
-when 22..24
-  hello = "遅くまでご苦労様です。"
-when 0..4
-  hello = "かなり遅くまでご苦労様です。"
-when 5..7
-  hello = "朝早くからご苦労様です。"
-else
-  hello = "お疲れさまです。"
-end
-
-###############################################################################
-# メール body 作成
-body = <<-EOB
-To: コミッターのみなさま
-
-#{hello} Subversion です。
-
-#{commit_name}さん(#{rank_num}位)が #{update_point} コミット(#{commit_point}pt)しました。
-#{notice}
-
-#{rank_part}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-■コミットコメント
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#{commit_com}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-■詳細情報: [U:修正，A:追加，D:削除]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
---------------------------------------------------------
-#{change_fullpath.join("\n")}
---------------------------------------------------------
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-■コミット情報
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- リポジトリ: #{REPOS}
- リビジョン: #{REV}
- 更新者    : #{commit_name.ljust(47)}
- 更新日時  : #{svndate.ljust(46)}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-■コミットランキング
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#{rank_result}
-now commit : #{svnauthor}
-
-EOB
-
-###############################################################################
-# メールヘッダ作成
 
 # コミットコメントの一行目をサブジェクトに表示する
 update_log = svnlog;
