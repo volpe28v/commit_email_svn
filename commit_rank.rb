@@ -1,5 +1,4 @@
 #!/usr/local/bin/ruby -Ke
-
 $:.unshift File.dirname(__FILE__)
 
 require 'net/smtp'
