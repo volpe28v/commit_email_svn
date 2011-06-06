@@ -37,10 +37,7 @@ class CommitRank
         user_name = "unknown"
     end
 
-    # リストにないメンバーの場合
-    if @commit_info_hash[user_name] == nil
-        @commit_info_hash[user_name] = CommitInfo.new("0 #{user_name} - 0")
-    end
+    @commit_info_hash[user_name] ||= CommitInfo.new("0 #{user_name} - 0")
 
     # 該当ユーザのカウントをインクリメント
     @commit_info_hash[user_name].addCommit(point)
