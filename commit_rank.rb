@@ -56,7 +56,6 @@ class CommitRank
   def make_rank_result
     rank_array = self.get_sorted_commit_info_array
     bar_limit = 50
-    max_sum = 0
     sum = 0
     rank_array.each{|rank| sum += rank[1].allCommitNum}
 
