@@ -73,6 +73,7 @@ body = CommitMailBody.new.get_mail_body(
    :commit_point => commit_point,
    :commit_com => commit_com,
    :update_point => update_point,
+	 :notice => notice,
    :rank_num => rank_num,
    :rank_part => rank_part,
    :rank_result => rank_result,
