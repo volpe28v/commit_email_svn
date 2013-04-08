@@ -97,8 +97,9 @@ repo_name = File.basename(REPOS);
 sub = "[SVN-#{repo_name}-#{REV}] #{subject.tojis}"
 GmailSender.new(MyGmailAddr, MyGmailPass).send_mail( sub, body, fromaddr, toaddr)
 
-#Gmail以外で SMTP を指定して送る場合は以下でいけるかもしれない
-#MailSender.new(smtp ,port).send_mail( sub, body, fromaddr, toaddr)
+#Gmail以外で 任意のSMTP を指定して送る場合は、上記をコメントアウトして
+#代わりに以下を有効にしてください
+#MailSender.new(SmtpAddr ,SmtpPort).send_mail( sub, body, fromaddr, toaddr)
 
 exit
 
