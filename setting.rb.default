@@ -2,6 +2,10 @@
 #MyGmailAddr = "xxxx@gmail.com"
 #MyGmailPass = "****"
 
+# 任意のSMTP経由でメールを送信するには以下を設定してください
+#SmtpAddr = "mail.xxxx.com"
+#SmtpPort = 25
+
 # Subversionのアカウント名をコミットメール上で変換したい場合は以下に書いてください
 NameList = Hash.new("");
 #NameList.store("hoge" ,    "ほげ");
