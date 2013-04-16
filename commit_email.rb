@@ -1,4 +1,5 @@
 #!/usr/local/bin/ruby -Ke
+# -*- coding: utf-8 -*-
 
 $:.unshift File.dirname(__FILE__)
 
@@ -19,13 +20,11 @@ REPOS = ARGV[0]
 REV   = ARGV[1].to_i
 
 # SVN更新情報取得
-svnauthor  =%x{svnlook author #{REPOS} -r #{REV}}.chomp
-svndate    =%x{svnlook date #{REPOS} -r #{REV}}.chomp
-svnchanged =%x{svnlook changed #{REPOS} -r #{REV}}.chomp
-svnlog     =%x{svnlook log #{REPOS} -r #{REV}}.chomp
-#svndiff    =%x{svnlook diff #{REPOS} -r #{REV}}.chomp
-
-svnlog = svnlog.kconv(Kconv::EUC, Kconv::ASCII)
+svnauthor  = %x{env LANG=ja_JP.UTF-8 svnlook author #{REPOS} -r #{REV}}.chomp
+svndate    = %x{env LANG=ja_JP.UTF-8 svnlook date #{REPOS} -r #{REV}}.chomp
+svnchanged = %x{env LANG=ja_JP.UTF-8 svnlook changed #{REPOS} -r #{REV}}.chomp
+svnlog     = %x{env LANG=ja_JP.UTF-8 svnlook log #{REPOS} -r #{REV}}.chomp
+#svndiff    =%x{env LANG=ja_JP.UTF-8 svnlook diff #{REPOS} -r #{REV}}.chomp
 
 fromaddr=['Subversion@localhost.localdomain']
 
@@ -94,7 +93,7 @@ end
 subject = " #{commit_name}さんがコミットしました [#{File.basename(update_filename)} (#{update_point})] #{update_log}"
 repo_name = File.basename(REPOS);
 
-sub = "[SVN-#{repo_name}-#{REV}] #{subject.tojis}"
+sub = "[SVN-#{repo_name}-#{REV}] #{subject}"
 GmailSender.new(MyGmailAddr, MyGmailPass).send_mail( sub, body, fromaddr, toaddr)
 
 #Gmail以外で 任意のSMTP を指定して送る場合は、上記をコメントアウトして
