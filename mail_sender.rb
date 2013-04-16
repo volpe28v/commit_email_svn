@@ -1,7 +1,6 @@
 require 'kconv'
 require 'nkf'
 require 'rubygems'
-require 'tmail'
 require 'tlsmail'
 
 class MailSender
@@ -13,19 +12,21 @@ class MailSender
   end
 
   def send_mail(subject, body, from, to )
-    mail                   = TMail::Mail.new
-    mail.to                = to
-    mail.from              = from
-    mail.subject           = NKF.nkf("-WMm0", subject.kconv(Kconv::JIS, Kconv::UTF8) )
-    mail.date              = Time.now
-    mail.mime_version      = '1.0'
-    mail.transfer_encoding = '7bit'
-    mail.set_content_type 'text', 'plain', {'charset'=>'iso-2022-jp'}
-    mail.body              = body.kconv(Kconv::JIS, Kconv::UTF8)
+    mailbody = <<EOT
+From: #{from}
+To: #{to.join(", ")}
+Subject: #{NKF.nkf("-WMm0", subject)}
+Date: #{Time::now.strftime("%a, %d %b %Y %X %z")}
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
+
+#{NKF.nkf("-Wjm0", body)}
+EOT
 
     self.before_send_hook
     Net::SMTP.start( @smtp,  @port , "localhost.localdomain", @id, @pass, "plain"){ |smtp|
-      smtp.sendmail(mail.encoded, mail.from, *mail.to)
+      smtp.sendmail mailbody, from, *to
     }
   end
   
