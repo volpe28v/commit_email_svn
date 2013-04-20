@@ -12,6 +12,7 @@ require 'setting'
 require 'mail_sender'
 require 'commit_rank'
 require 'mail_body'
+require 'svnlook_result'
 
 ###############################################################################
 # 設定値
@@ -20,11 +21,11 @@ REPOS = ARGV[0]
 REV   = ARGV[1].to_i
 
 # SVN更新情報取得
-svnauthor  = %x{env LANG=ja_JP.UTF-8 svnlook author #{REPOS} -r #{REV}}.chomp
-svndate    = %x{env LANG=ja_JP.UTF-8 svnlook date #{REPOS} -r #{REV}}.chomp
-svnchanged = %x{env LANG=ja_JP.UTF-8 svnlook changed #{REPOS} -r #{REV}}.chomp
-svnlog     = %x{env LANG=ja_JP.UTF-8 svnlook log #{REPOS} -r #{REV}}.chomp
-#svndiff    =%x{env LANG=ja_JP.UTF-8 svnlook diff #{REPOS} -r #{REV}}.chomp
+svn = SvnlookResult.new(REPOS, REV)
+svnauthor  = svn.author
+svndate    = svn.date
+svnchanged = svn.changed
+svnlog     = svn.log
 
 fromaddr=['Subversion@localhost.localdomain']
 
@@ -72,7 +73,7 @@ body = CommitMailBody.new.get_mail_body(
    :commit_point => commit_point,
    :commit_com => commit_com,
    :update_point => update_point,
-	 :notice => notice,
+   :notice => notice,
    :rank_num => rank_num,
    :rank_part => rank_part,
    :rank_result => rank_result,

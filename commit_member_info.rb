@@ -24,7 +24,7 @@ def getSendMember (repos)
   #Todo: setting.rb に ToAddrs の定義を外だししているが汚いので直す予定
 
   #コミットメール振り分け設定  
-  repo_base_name = repos.split("/")[-1]
+  repo_base_name = File.basename(repos)
 
   return ToAddrs[repo_base_name]
 end
