@@ -16,7 +16,7 @@ require 'svnlook_result'
 
 ###############################################################################
 # 設定値
-
+MAX_COMMIT_POINT = 10           # 一度のコミットでもらえるポイントの上限
 REPOS = ARGV[0]
 REV   = ARGV[1].to_i
 
@@ -39,7 +39,7 @@ update_point = svnchanged.split("\n").length
 
 # コミットコメント変換
 commit_com = svnlog;
-commit_point = update_point
+commit_point = update_point > MAX_COMMIT_POINT ? MAX_COMMIT_POINT : update_point
 notice = ""
 if commit_com == "" then
     commit_com = "なし"
