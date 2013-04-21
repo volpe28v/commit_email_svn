@@ -9,7 +9,6 @@ require 'setting'
 require 'commit_info'
 
 RANK_FILE = File.dirname(__FILE__) + '/commit_ranking.txt';
-MAX_COMMIT_POINT = 10
 
 class CommitRank
   def initialize(rank_file = RANK_FILE)
@@ -27,11 +26,6 @@ class CommitRank
 
   # カウンタ更新メソッド
   def update_ranking( user_name, point = 1)
-    # MAX_COMMIT_POINTポイントを上限とする
-    if point > MAX_COMMIT_POINT 
-      point = MAX_COMMIT_POINT
-    end
-
     # ユーザ名不明の場合
     if user_name == ""
         user_name = "unknown"
