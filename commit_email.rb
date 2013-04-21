@@ -43,7 +43,7 @@ commit_point = update_point
 notice = ""
 if commit_com == "" then
     commit_com = "なし"
-    commit_point = 0 
+    commit_point = 0
     notice = "※コミットコメントが未記述な場合はポイント加算されません。"
 end
 
